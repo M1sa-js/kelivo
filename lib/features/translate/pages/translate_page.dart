@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -265,18 +266,19 @@ class _TranslatePageState extends State<TranslatePage> {
         title: Text(l10n.desktopNavTranslateTooltip),
         actions: [
           // Paste
-          Tooltip(
-            message: l10n.translatePagePasteButton,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: IosIconButton(
-                icon: lucide.Lucide.Clipboard,
-                size: 20,
-                padding: const EdgeInsets.all(8),
-                onTap: _pasteFromClipboard,
+          if (!Platform.isIOS)
+            Tooltip(
+              message: l10n.translatePagePasteButton,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: IosIconButton(
+                  icon: lucide.Lucide.Clipboard,
+                  size: 20,
+                  padding: const EdgeInsets.all(8),
+                  onTap: _pasteFromClipboard,
+                ),
               ),
             ),
-          ),
           // Copy result
           Tooltip(
             message: l10n.translatePageCopyResult,

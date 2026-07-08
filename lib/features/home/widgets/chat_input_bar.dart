@@ -508,15 +508,26 @@ class _ChatInputBarState extends State<ChatInputBar>
           );
         }
 
-        // Paste (text or image via _handlePasteFromClipboard)
+        // Paste (Use Flutter default paste button if available, to avoid iOS 18 clipboard permission popup)
+        ContextMenuButtonItem? defaultPasteItem;
+        try {
+          for (final item in state.contextMenuButtonItems) {
+            if (item.type == ContextMenuButtonType.paste) {
+              defaultPasteItem = item;
+              break;
+            }
+          }
+        } catch (_) {}
+
         items.add(
-          ContextMenuButtonItem(
-            onPressed: () {
-              _handlePasteFromClipboard();
-              state.hideToolbar();
-            },
-            label: materialL10n.pasteButtonLabel,
-          ),
+          defaultPasteItem ??
+              ContextMenuButtonItem(
+                onPressed: () {
+                  _handlePasteFromClipboard();
+                  state.hideToolbar();
+                },
+                label: materialL10n.pasteButtonLabel,
+              ),
         );
 
         // Insert newline
